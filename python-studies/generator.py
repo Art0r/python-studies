@@ -1,7 +1,7 @@
 from typing import Generator
 
 
-def numbers_generator(qnt: int) -> Generator[int, int, None]:
+def numbers_generator(qnt: int) -> Generator[int, int, str]:
     # Generator[yield_type, send_type, return_type]
     result = 0
     while qnt >= 0:
@@ -13,6 +13,8 @@ def numbers_generator(qnt: int) -> Generator[int, int, None]:
         # decrease counter
         qnt -= 1
 
+    return "Completed"
+
 
 qnt = 10
 multiply_by = 100
@@ -22,7 +24,15 @@ random_numbers_generator = numbers_generator(qnt)
 next(random_numbers_generator)
 
 # now truly counting
-n_list = [random_numbers_generator.send(multiply_by) for i in range(qnt)]
+n_list = []
+while True:
+    try:
+        n_list.append(random_numbers_generator.send(multiply_by))
+    except StopIteration as e:
+        # display Completed
+        print(e.value)
+        break
+
 print(n_list)
 
 # prints from 1000 to 100 as string (decrease based on counting)
